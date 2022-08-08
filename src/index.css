@@ -1,0 +1,105 @@
+body {
+  margin: 0 ;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  
+}
+
+
+#main{
+  height: calc(100vh - 20vh);
+}
+.bg-black{
+  background-color:black;
+  height:  100vh; 
+  width: 100% !important;
+
+}
+
+svg {
+  filter: drop-shadow(3px 5px 8px rgba(255, 248, 194, 0.9));
+}
+
+.star{
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color:rgb(9, 9, 11);
+  animation: space 180s ease-in-out infinite;
+  background-image:
+  radial-gradient(rgba(0, 0, 255, 0.31), rgba(255,255,255,.1) 5px, transparent 40px),
+  /* radial-gradient(red, rgba(255,255,255,.10) 2px, transparent 30px), */
+  radial-gradient(rgba(229, 255, 0, 0.492), rgba(255,255,255,.1) 1px, transparent 20px),
+  radial-gradient(rgba(255, 174, 0, 0.61), rgba(255, 255, 255, 0.063) 1px, transparent 20px),
+  radial-gradient(rgba(0, 255, 225, 0.61), rgba(255, 255, 255, 0.063) 1px, transparent 20px),
+  radial-gradient(rgba(0, 255, 225, 0.61), rgba(255, 255, 255, 0.063) 1px, transparent 10px),
+  radial-gradient(rgb(0, 255, 225), rgba(255, 255, 255, 0.063) 1px, transparent 20px),
+
+  radial-gradient(rgba(255, 255, 255, 0.4), rgba(255,255,255,.1) 2px, transparent 30px);
+  background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px; 
+  background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
+}
+
+.text {
+  color: #169ca3;
+  font-family: 'Brush Script MT', cursive;
+ 
+}
+
+.globe{
+  margin-left: auto;
+  margin-right: auto;
+ 
+}
+
+.marks .sphere {
+	 fill: #071043;
+   position: absolute;
+    left: 0px!important;
+    margin-left: 0px!important;
+    
+    /* stroke: #FDF687; */
+    /* background: -webkit-linear-gradient(-91deg, #EEF85B 5%, #7AEC8D 53%, #09E5C3 91%); */
+ 
+}
+ 
+.marks .graticule {
+  fill: none;
+	 stroke: #FDF687;
+   filter: drop-shadow(3px 5px 8px rgba(194, 194, 255, 0.9));
+
+}
+.marks .feature {
+  fill: #323162;
+	stroke: #FDF687;
+  /* filter: drop-shadow(3px 2px 2px rgba(255, 248, 194, 0.9)); */
+
+}
+.marks .interiors {
+   fill: none;
+	 stroke: #FDF687;  
+   filter: drop-shadow(3px 5px 3px rgba(255, 248, 194, 0.9));
+
+   background: -webkit-linear-gradient(-91deg, #EEF85B 5%, #7AEC8D 53%, #09E5C3 91%);
+}
+
+
+/* The sidebar menu */
+/*  
+/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {font-size: 18px;}
+  .sidenav i {font-size: 18px;}
+}
+
+@media screen and (max-width: 450px) {
+  .sidenav {
+    padding-top: 15px;
+    width: 10%;
+  }
+  .sidenav a {font-size: 18px;}
+  .sidenav i {font-size: 18px;}
+}
