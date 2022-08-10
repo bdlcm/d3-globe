@@ -1,4 +1,4 @@
-# Getting Started with Create React App and D3.js
+# React App and D3.js
 
 Creates a spinning globe with countries. WIP.
 
