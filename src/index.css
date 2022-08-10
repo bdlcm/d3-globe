@@ -86,9 +86,9 @@ svg {
 .marks .graticule {
   fill: none;
   stroke: #fdf687;
-  filter: drop-shadow(3px 5px 8px rgba(194, 194, 255, 0.9));
+  /* filter: drop-shadow(3px 5px 8px rgba(194, 194, 255, 0.9)); */
 }
-.marks .feature {
+.marks .land {
   fill: #323162;
   stroke: #fdf687;
   /* filter: drop-shadow(3px 2px 2px rgba(255, 248, 194, 0.9)); */
@@ -96,14 +96,8 @@ svg {
 .marks .interiors {
   fill: none;
   stroke: #fdf687;
-  filter: drop-shadow(3px 5px 3px rgba(255, 248, 194, 0.9));
-
-  background: -webkit-linear-gradient(
-    -91deg,
-    #eef85b 5%,
-    #7aec8d 53%,
-    #09e5c3 91%
-  );
+  /* filter: drop-shadow(3px 5px 3px rgba(255, 248, 194, 0.9)); */
+ 
 }
 
 /* The sidebar menu */

@@ -1,70 +1,115 @@
-import { geoOrthographic, geoPath, geoGraticule, append } from "d3";
-import React, { useState, useCallback, useEffect } from "react";
+import { geoOrthographic, geoPath, geoGraticule, timer} from "d3";
+import React, { useState, useMemo, useEffect, useRef } from "react";
 import $, { data } from "jquery";
+import { Counter } from "./hooks/animation";
 
 export const Marks = ({ data: { land, geometry } }) => {
+
+ 
   const width = 500;
   const height = 500;
-  const intialMousePosition = { x: width / 2, y: height / 2 };
+  // const intialMousePosition = { x: width / 2, y: height / 2 };
   const rotate = [0, -23.5];
   const velocity = [0.015, -0];
-  const [dt, setDT] = useState(Date.now());
+  // const [dt, setDT] = useState(Date.now());
 
-  const projection = geoOrthographic()
-    .scale(300)
-    .rotate([rotate[0] + velocity[0] * dt, rotate[1] + velocity[1] * dt]);
-  const path = geoPath(projection);
-  const graticule = geoGraticule();
+ 
+  const [rotation, setRotation] = useState(0);
 
-  const time = Date.now();
 
-  // const [now, setNow] = useState(Date.now())
+ 
+  const savedCallback = useRef();
 
-  const [MousePosition, SetMousePosition] = useState(intialMousePosition);
-  const [mouseDown, SetMousedDown] = useState(false);
+  const count=Counter();
 
-  const handleMouseDown = useCallback((event) => {
-    SetMousedDown(true);
+  const projection = useMemo(() => {
+
+   return geoOrthographic()
+    .scale(300);
   }, []);
 
-  const handleMouseUp = useCallback((event) => {
-    $(".marks").css("cursor", "");
-    SetMousedDown(false);
+  const path   = useMemo(() => {
+
+    return geoPath(projection);
+   }, [projection]);
+ 
+  const graticule = useMemo(() => {
+
+    return geoGraticule();
+
   }, []);
+  // function useInterval(callback, delay) {
 
-  const handleClick = useCallback((event) => {
-    console.log(event);
-  }, []);
+  //   useEffect(() => {
+  //     savedCallback.current = callback;
+  //   }, [callback]);
+    
+  //   // Set up the interval.
+  //   useEffect(() => {
+  //     let id = setInterval(() => {
+  //       savedCallback.current();
+  //     }, delay);
+  //     return () => clearInterval(id);
+  //   }, [delay]);
+    
+  // };
 
-  const handleMouseMove = useCallback(
-    (event) => {
-      const { clientX, clientY } = event;
-      if (mouseDown) {
-        SetMousePosition({ x: clientX, y: clientY });
-        $(".marks").css("cursor", "pointer");
-        $(".star").css("backgroundPositionX", clientX);
-        $(".star").css("backgroundPositionY", clientY);
-      }
-    },
-    [SetMousePosition, mouseDown]
-  );
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setDT(Date.now() - time);
-    }, 200);
 
-    return () => clearInterval(interval); // This represents the unmount function, in which you need to clear your interval to prevent memory leaks.
-  }, []);
+
+ 
+ 
+
+ 
+  // useInterval(() => {
+  //   setRotation(rotation + 0.2);
+  //   console.log("interval", rotation)
+  // }, 200);
+
+ 
+
+
+  // const useAnimationFrame = callback => {
+  //   // Use useRef for mutable variables that we want to persist
+  //   // without triggering a re-render on their change
+  //   const requestRef = useRef();
+  //   const previousTimeRef =  useRef();
+    
+  //   const animate = time => {
+  //     if (previousTimeRef.current != undefined) {
+  //       const deltaTime = time - previousTimeRef.current;
+  //       callback(deltaTime)
+  //     }
+  //     previousTimeRef.current = time;
+  //     requestRef.current = requestAnimationFrame(animate);
+  //   }
+    
+  //  useEffect(() => {
+  //     requestRef.current = requestAnimationFrame(animate);
+  //     return () => cancelAnimationFrame(requestRef.current);
+  //   }, []); // Make sure the effect runs only once
+  // }
+  
+  //   const Counter = () => {
+  //   const [count, setCount] = React.useState(0)
+    
+  //   useAnimationFrame(deltaTime => {
+  //     // Pass on a function to the setter of the state
+  //     // to make sure we always have the latest state
+  //     setCount(prevCount => (prevCount + deltaTime * 0.01) % 100)
+  //   })
+      
+  //  console.log("count", count);
+  // }
+  
 
   return (
+
     <g
       className="marks"
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
+ 
     >
-      {projection}
+      {projection.rotate([count, -24])}
       <path className="sphere" d={path({ type: "Sphere" })} />
       <path
         className="graticule"
@@ -87,7 +132,7 @@ export const Marks = ({ data: { land, geometry } }) => {
             {/* <div     cx={path.centroid(feature)[0]} cy={path.centroid(feature)[1]}   fontSize="36">{feature.properties.name}</div> */}
           </path>
 
-          {path.centroid(feature)[0] ?? (
+          {/* {path.centroid(feature)[0] ?? (
             <circle
               className="interiors"
               key={i}
@@ -97,7 +142,7 @@ export const Marks = ({ data: { land, geometry } }) => {
               fill="red"
               fontSize="36"
             ></circle>
-          )}
+          )} */}
         </g>
       ))}
     </g>
