@@ -1,34 +1,34 @@
 import React, { useState, useCallback, useEffect, useRef } from "react";
 
-const useAnimationFrame = callback => {
+const useAnimationFrame = (callback) => {
   // Use useRef for mutable variables that we want to persist
   // without triggering a re-render on their change
   const requestRef = useRef();
-  const previousTimeRef =  useRef();
-  
-  const animate = time => {
+  const previousTimeRef = useRef();
+
+  const animate = (time) => {
     if (previousTimeRef.current != undefined) {
       const deltaTime = time - previousTimeRef.current;
-      callback(deltaTime)
+      callback(deltaTime);
     }
     previousTimeRef.current = time;
     requestRef.current = requestAnimationFrame(animate);
-  }
-  
- useEffect(() => {
+  };
+
+  useEffect(() => {
     requestRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(requestRef.current);
   }, []); // Make sure the effect runs only once
-}
+};
 
 export const Counter = () => {
-  const [count, setCount] = useState(0)
-  
-  useAnimationFrame(deltaTime => {
+  const [count, setCount] = useState(0);
+
+  useAnimationFrame((deltaTime) => {
     // Pass on a function to the setter of the state
     // to make sure we always have the latest state
-    setCount(prevCount => (prevCount + deltaTime * 0.01) % 100)
-  })
-    
-  return count
-}
+    setCount((prevCount) => (prevCount + deltaTime * 0.01) % 100);
+  });
+
+  return count;
+};

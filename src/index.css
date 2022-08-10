@@ -18,6 +18,14 @@ svg {
   filter: drop-shadow(3px 5px 8px rgba(255, 248, 194, 0.9));
 }
 
+#globe svg {
+  background: rgb(7, 16, 67);
+  border-radius: 100%;
+  /* box-shadow:0 0 10px rgba(0,0,0,0.4); */
+  /* position: absolute; */
+  left: 0px !important;
+  margin-left: 0px !important;
+}
 .star {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -68,9 +76,13 @@ svg {
   font-family: "Brush Script MT", cursive;
 }
 
-.globe {
+#globe {
   margin-left: auto;
   margin-right: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .marks .sphere {
@@ -83,12 +95,7 @@ svg {
   /* background: -webkit-linear-gradient(-91deg, #EEF85B 5%, #7AEC8D 53%, #09E5C3 91%); */
 }
 
-.marks .graticule {
-  fill: none;
-  stroke: #fdf687;
-  /* filter: drop-shadow(3px 5px 8px rgba(194, 194, 255, 0.9)); */
-}
-.marks .land {
+.marks .continents {
   fill: #323162;
   stroke: #fdf687;
   /* filter: drop-shadow(3px 2px 2px rgba(255, 248, 194, 0.9)); */
@@ -97,7 +104,13 @@ svg {
   fill: none;
   stroke: #fdf687;
   /* filter: drop-shadow(3px 5px 3px rgba(255, 248, 194, 0.9)); */
- 
+
+  background: -webkit-linear-gradient(
+    -91deg,
+    #eef85b 5%,
+    #7aec8d 53%,
+    #09e5c3 91%
+  );
 }
 
 /* The sidebar menu */
