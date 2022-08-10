@@ -1,6 +1,6 @@
-# Getting Started with Create React App
+# Getting Started with Create React App and D3.js
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Creates a spinning globe with countries. WIP.
 
 ## Available Scripts
 
