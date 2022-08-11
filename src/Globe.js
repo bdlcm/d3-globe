@@ -3,7 +3,7 @@ import { geoOrthographic, geoPath, scaleLinear, geoGraticule } from "d3";
 
 import React, { useState, useEffect } from "react";
 
-export const Globe = ({ data: { land, geometry } }) => {
+export const Globe = ({ data: { land, geometry }, countryData }) => {
   useEffect(() => {
     renderD3Globe();
   }, []);
@@ -25,7 +25,9 @@ export const Globe = ({ data: { land, geometry } }) => {
 
     const φ = scaleLinear().domain([0, height]).range([90, -90]);
 
-    
+    const scrollSpeed = 50;
+
+    let current = 0;
 
     const svg = d3
       .select("#globe")
@@ -33,27 +35,32 @@ export const Globe = ({ data: { land, geometry } }) => {
       .attr("width", width)
       .attr("height", height);
 
+    //adds a gradient for styling use
+    const defs = svg.append("defs");
 
-      const defs = svg.append("defs");
-
-      const gradient = defs.append("linearGradient")
-      .attr("id", 'svgGradient')
+    const gradient = defs
+      .append("linearGradient")
+      .attr("id", "svgGradient")
       .attr("x1", "0%")
       .attr("x2", "100%")
       .attr("y1", "0%")
       .attr("y2", "100%");
-      
-      gradient.append("stop")
+
+    gradient
+      .append("stop")
       .attr("class", "start")
       .attr("offset", "0%")
-      .attr('stop-color', "#07f2a0")
-      .attr('stop-opacity', 1);
-      
-      gradient.append("stop")
+      .attr("stop-color", "#07f2a0")
+      .attr("stop-opacity", 1);
+
+    gradient
+      .append("stop")
       .attr("class", "end")
       .attr("offset", "100%")
-      .attr('stop-color',  "#323162")
+      .attr("stop-color", "#323162")
       .attr("stop-opacity", 1);
+
+    //end of gradient
 
     svg.append("circle").attr("class", "sphere").style("fill", "none");
 
@@ -72,23 +79,67 @@ export const Globe = ({ data: { land, geometry } }) => {
       .attr("class", "interiors")
       .attr("d", path(geometry));
 
-//   svg.append("path")
-// .attr("d", function () { } )
-// .attr("stroke","url(#svgGradient)")
-// .attr("fill", "none");
+    svg
+      .append("g")
+      .datum(geometry)
+      .attr("class", "interiors")
+      .attr("d", path(geometry));
 
-    const scrollSpeed = 50;
-
-    let current = 0;
     function bgscroll() {
-      current += 2;
+      current += 5;
       projection.rotate([-λ(current), -24]);
       svg.selectAll("path").attr("d", path);
+
+      drawCircles();
     }
 
+    function drawCircles() {
+      var circles = svg.selectAll("circle").data(geometry.features);
+      circles
+        .enter()
+        .append("circle")
+        .merge(circles)
+        // .attr("d", path(geometry))
 
-  
+        .style("fill", "black")
+        // .attr("d", path(geometry));
+        .attr("cx", function (d) {
 
+          if (path.centroid(d)[0])
+         { return path.centroid(d)[0]};
+        })
+        .attr("cy", function (d) {
+          if (path.centroid(d)[0])
+          {return path.centroid(d)[1]};
+        })
+        .attr("r", function (d) {
+        //   const result = countryData.filter(
+        //     (country) => country["United Nations m49 country code"] === d.id
+        //   );
+        
+        //   if (result.length != 0)
+        // {    if (
+        //       result[0]["Electric power consumption (kWh per capita)"] >= 5000
+        //     ) {
+        //       return 10;
+        //     }
+        //   if (
+        //     result[0]["Electric power consumption (kWh per capita)"] >= 1000
+        //   ) {
+        //     return 2;
+        //   }
+        //   if (result[0]["Electric power consumption (kWh per capita)"] >= 500) {
+        //     return 1;
+        //   } }
+          
+        //   else {
+        //     return 0.5;
+        //   }
+        return 5
+         });
+
+      circles.exit().remove();
+    }
 
     setInterval(bgscroll, scrollSpeed);
   };
