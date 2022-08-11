@@ -50,7 +50,7 @@ export const Globe = ({ data: { land, geometry }, countryData }) => {
       .append("stop")
       .attr("class", "start")
       .attr("offset", "0%")
-      .attr("stop-color", "#07f2a0")
+      .attr("stop-color", "#05f4a0")
       .attr("stop-opacity", 1);
 
     gradient
@@ -69,7 +69,8 @@ export const Globe = ({ data: { land, geometry }, countryData }) => {
       .datum(land)
       .attr("class", "land")
       .attr("d", path)
-      .style("fill", "url(#svgGradient)");
+       
+    
 
     svg.append("path").attr("class", "graticule").attr("d", path(graticule()));
 
@@ -77,14 +78,16 @@ export const Globe = ({ data: { land, geometry }, countryData }) => {
       .append("path")
       .datum(geometry)
       .attr("class", "interiors")
-      .attr("d", path(geometry));
+      .style("fill", "url(#svgGradient)")
 
+      .attr("d", path(geometry))
     svg
       .append("g")
       .datum(geometry)
       .attr("class", "interiors")
       .attr("d", path(geometry));
 
+ 
     function bgscroll() {
       current += 5;
       projection.rotate([-λ(current), -24]);
@@ -99,11 +102,12 @@ export const Globe = ({ data: { land, geometry }, countryData }) => {
         .enter()
         .append("circle")
         .merge(circles)
-        // .attr("d", path(geometry))
-
-        .style("fill", "black")
-        // .attr("d", path(geometry));
-        .attr("cx", function (d) {
+ 
+         .style("opacity", 0.5)
+        .style("fill", "#00ffa6")
+        // .attr("stroke", "#028457")
+    
+         .attr("cx", function (d) {
 
           if (path.centroid(d)[0])
          { return path.centroid(d)[0]};
@@ -113,29 +117,49 @@ export const Globe = ({ data: { land, geometry }, countryData }) => {
           {return path.centroid(d)[1]};
         })
         .attr("r", function (d) {
-        //   const result = countryData.filter(
-        //     (country) => country["United Nations m49 country code"] === d.id
-        //   );
+          const result = countryData.filter(
+            (country) => country["United Nations m49 country code"] === d.id
+          );
         
-        //   if (result.length != 0)
-        // {    if (
-        //       result[0]["Electric power consumption (kWh per capita)"] >= 5000
-        //     ) {
-        //       return 10;
-        //     }
-        //   if (
-        //     result[0]["Electric power consumption (kWh per capita)"] >= 1000
-        //   ) {
-        //     return 2;
-        //   }
-        //   if (result[0]["Electric power consumption (kWh per capita)"] >= 500) {
-        //     return 1;
-        //   } }
+          if (result.length != 0)
+        { 
+          if (
+            result[0]["Electric power consumption (kWh per capita)"] >= 20000
+          ) {
+            return 30;
+          }  
           
-        //   else {
-        //     return 0.5;
-        //   }
-        return 5
+          if (
+              result[0]["Electric power consumption (kWh per capita)"] >= 10000
+            ) {
+              return 20;
+            }
+
+            if (
+              result[0]["Electric power consumption (kWh per capita)"] >= 5000
+            ) {
+              return 10;
+            }
+          if (
+            result[0]["Electric power consumption (kWh per capita)"] >= 1000
+          ) {
+            return 5;
+          }
+          if (result[0]["Electric power consumption (kWh per capita)"] >= 500) {
+            return 2.5;
+          } 
+
+          if (result[0]["Electric power consumption (kWh per capita)"] >= 200) {
+            return 1;
+          }
+        
+        
+        }
+          
+          else {
+            return 0.5;
+          }
+        // return 5
          });
 
       circles.exit().remove();

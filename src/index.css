@@ -104,7 +104,7 @@ svg {
   fill: none;
   /* stroke: linear-gradient(0deg, rgb(29, 28, 58) 0%, rgb(2, 132, 87) 100%); */
   /* filter: drop-shadow(3px 5px 3px rgba(255, 248, 194, 0.9)); */
-  stroke: rgb(2, 132, 87);
+  stroke: #028457;
   background: -webkit-linear-gradient(
     -91deg,
     #eef85b 5%,
@@ -112,31 +112,5 @@ svg {
     #09e5c3 91%
   );
 }
-
-/* The sidebar menu */
-/*  
-/* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
-@media screen and (max-height: 450px) {
-  .sidenav {
-    padding-top: 15px;
-  }
-  .sidenav a {
-    font-size: 18px;
-  }
-  .sidenav i {
-    font-size: 18px;
-  }
-}
-
-@media screen and (max-width: 450px) {
-  .sidenav {
-    padding-top: 15px;
-    width: 10%;
-  }
-  .sidenav a {
-    font-size: 18px;
-  }
-  .sidenav i {
-    font-size: 18px;
-  }
-}
+ 
+ 
