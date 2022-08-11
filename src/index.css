@@ -9,17 +9,19 @@ body {
   height: calc(100vh - 20vh);
 }
 .bg-black {
-  background-color: black;
+  background-color: rgb(1, 0, 22);
+  
   height: 100vh;
   width: 100% !important;
 }
 
 svg {
-  filter: drop-shadow(3px 5px 8px rgba(255, 248, 194, 0.9));
+  filter: drop-shadow(3px 5px 8px rgba(159, 190, 253, 0.9));
 }
 
 #globe svg {
-  background: rgb(7, 16, 67);
+  /* background: #244971; */
+  background: radial-gradient( #016bbb, #012138);
   border-radius: 100%;
   /* box-shadow:0 0 10px rgba(0,0,0,0.4); */
   /* position: absolute; */
@@ -29,9 +31,7 @@ svg {
 .star {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: rgb(9, 9, 11);
-  animation: space 180s ease-in-out infinite;
-  background-image: radial-gradient(
+   background-image: radial-gradient(
       rgba(0, 0, 255, 0.31),
       rgba(255, 255, 255, 0.1) 5px,
       transparent 40px
@@ -86,7 +86,7 @@ svg {
 }
 
 .marks .sphere {
-  fill: #071043;
+  fill: #16497F;
   position: absolute;
   left: 0px !important;
   margin-left: 0px !important;
@@ -96,13 +96,14 @@ svg {
 }
 
 .marks .continents {
-  fill: #323162;
+  fill: #1b7857;
   stroke: #fdf687;
   /* filter: drop-shadow(3px 2px 2px rgba(255, 248, 194, 0.9)); */
 }
 .marks .interiors {
   fill: none;
-  stroke: #fdf687;
+  stroke: linear-gradient(0deg, rgba(50,49,98,1) 0%, rgba(7,242,160,1) 100%);;
+  
   /* filter: drop-shadow(3px 5px 3px rgba(255, 248, 194, 0.9)); */
 
   background: -webkit-linear-gradient(

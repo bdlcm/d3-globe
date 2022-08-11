@@ -25,20 +25,44 @@ export const Globe = ({ data: { land, geometry } }) => {
 
     const φ = scaleLinear().domain([0, height]).range([90, -90]);
 
+    
+
     const svg = d3
       .select("#globe")
       .append("svg")
       .attr("width", width)
       .attr("height", height);
 
-    svg.append("circle").attr("class", "sphere").style("fill", "white");
+
+      const defs = svg.append("defs");
+
+      const gradient = defs.append("linearGradient")
+      .attr("id", 'svgGradient')
+      .attr("x1", "0%")
+      .attr("x2", "100%")
+      .attr("y1", "0%")
+      .attr("y2", "100%");
+      
+      gradient.append("stop")
+      .attr("class", "start")
+      .attr("offset", "0%")
+      .attr('stop-color', "#07f2a0")
+      .attr('stop-opacity', 1);
+      
+      gradient.append("stop")
+      .attr("class", "end")
+      .attr("offset", "100%")
+      .attr('stop-color',  "#323162")
+      .attr("stop-opacity", 1);
+
+    svg.append("circle").attr("class", "sphere").style("fill", "none");
 
     svg
       .append("path")
       .datum(land)
       .attr("class", "land")
       .attr("d", path)
-      .style("fill", "#323162");
+      .style("fill", "url(#svgGradient)");
 
     svg.append("path").attr("class", "graticule").attr("d", path(graticule()));
 
@@ -48,14 +72,23 @@ export const Globe = ({ data: { land, geometry } }) => {
       .attr("class", "interiors")
       .attr("d", path(geometry));
 
+//   svg.append("path")
+// .attr("d", function () { } )
+// .attr("stroke","url(#svgGradient)")
+// .attr("fill", "none");
+
     const scrollSpeed = 50;
 
     let current = 0;
     function bgscroll() {
-      current += 1;
+      current += 2;
       projection.rotate([-λ(current), -24]);
       svg.selectAll("path").attr("d", path);
     }
+
+
+  
+
 
     setInterval(bgscroll, scrollSpeed);
   };
