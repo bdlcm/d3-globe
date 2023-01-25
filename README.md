@@ -27,7 +27,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 
  
+<img width="541" alt="Screen Shot 2023-01-25 at 11 43 12 AM" src="https://user-images.githubusercontent.com/45096174/214624262-4a7babcb-f00b-4ee6-8635-363488ad2bf1.png">
 
-https://user-images.githubusercontent.com/45096174/184192407-a5565cbd-d3a4-4714-b1ea-92c81bdfaf80.mov
 
 
