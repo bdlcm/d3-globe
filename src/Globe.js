@@ -1,176 +1,161 @@
 import * as d3 from "d3";
-import { geoOrthographic, geoPath, scaleLinear, geoGraticule } from "d3";
+import { scaleLinear } from "d3";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 export const Globe = ({ data: { land, geometry }, countryData }) => {
+  const svgRef = useRef(null);
+  const legendRef = useRef(null);
+
   useEffect(() => {
     renderD3Globe();
+    renderLegend();
   }, []);
 
+  const countryDataArray = Object.entries(countryData);
+
+  const width = 400;
+  const height = 400;
+  const projection = d3
+    .geoOrthographic()
+    .scale(200)
+    .translate([width / 2, height / 2])
+    .clipAngle(90);
+
+  const path = d3.geoPath().projection(projection);
+
+  const renderLegend = () => {
+    const minValue = Math.min(
+      ...countryDataArray.map(
+        ([code, data]) => data["Electric power consumption (kWh per capita)"]
+      )
+    );
+    const maxValue = Math.max(
+      ...countryDataArray.map(
+        ([code, data]) => data["Electric power consumption (kWh per capita)"]
+      )
+    );
+
+    // Legend variables
+    const legendHeight = 20;
+    const legendWidth = 300;
+
+    const background = d3.select(legendRef.current).append("svg");
+
+    // Legend container
+    const legend = background.append("g").attr("id", "legend");
+
+    // Legend gradient
+    const gradient = legend
+      .append("defs")
+      .append("linearGradient")
+      .attr("id", "legend-gradient")
+      .attr("x1", "0%")
+      .attr("y1", "0%")
+      .attr("x2", "100%")
+      .attr("y2", "0%")
+      .attr("spreadMethod", "pad");
+
+    // Legend gradient color stops
+    gradient
+      .append("stop")
+      .attr("offset", "0%")
+      .attr("stop-color", "hsl(150,100%,20%)");
+    gradient
+      .append("stop")
+      .attr("offset", "100%")
+      .attr("stop-color", "hsl(150,100%,100%)");
+
+    // Legend rectangle
+    legend
+      .append("rect")
+      .attr("width", legendWidth)
+      .attr("height", legendHeight)
+      .style("fill", "url(#legend-gradient)");
+
+    // Legend scale
+    const legendScale = d3
+      .scaleLinear()
+      .domain([minValue, maxValue])
+      .range([0, legendWidth]);
+
+    // Legend axis
+    const legendAxis = d3
+      .axisBottom(legendScale)
+      .ticks(4)
+      .tickFormat((d) => d + " kWh");
+
+    legend
+      .append("g")
+      .attr("transform", `translate(0, ${legendHeight})`)
+      .call(legendAxis)
+      .selectAll("text")
+      .style("fill", "white"); // Change the color of the text to white
+  };
+
   const renderD3Globe = () => {
-    const width = 400,
-      height = 400;
-
-    const projection = geoOrthographic()
-      .scale(200)
-      .translate([width / 2, height / 2])
-      .clipAngle(90);
-
-    const path = geoPath(projection);
-
-    const graticule = geoGraticule();
-
     const λ = scaleLinear().domain([0, width]).range([-180, 180]);
 
-    const φ = scaleLinear().domain([0, height]).range([90, -90]);
+    let rafId = null;
+
+    const graticule = d3.geoGraticule();
 
     const scrollSpeed = 50;
-
     let current = 0;
 
     const svg = d3
-      .select("#globe")
+      .select(svgRef.current)
       .append("svg")
       .attr("width", width)
       .attr("height", height);
 
-    //adds a gradient for styling use
-    const defs = svg.append("defs");
-
-    const gradient = defs
-      .append("linearGradient")
-      .attr("id", "svgGradient")
-      .attr("x1", "0%")
-      .attr("x2", "100%")
-      .attr("y1", "0%")
-      .attr("y2", "100%");
-
-    gradient
-      .append("stop")
-      .attr("class", "start")
-      .attr("offset", "0%")
-      .attr("stop-color", "#05f4a0")
-      .attr("stop-opacity", 1);
-
-    gradient
-      .append("stop")
-      .attr("class", "end")
-      .attr("offset", "100%")
-      .attr("stop-color", "#323162")
-      .attr("stop-opacity", 1);
-
-    //end of gradient
-
     svg.append("circle").attr("class", "sphere").style("fill", "none");
 
-    svg
-      .append("path")
-      .datum(land)
-      .attr("class", "land")
-      .attr("d", path)
-       
-    
+    svg.append("path").datum(land).attr("class", "land").attr("d", path);
 
     svg.append("path").attr("class", "graticule").attr("d", path(graticule()));
 
-    svg
-      .append("path")
-      .datum(geometry)
-      .attr("class", "interiors")
-      .style("fill", "url(#svgGradient)")
+    countryDataArray.forEach(([code, data]) => {
+      svg
+        .append("path")
+        .datum(
+          geometry.features.find(
+            (f) => f.id === data["United Nations m49 country code"]
+          )
+        )
+        .attr("class", "interiors")
+        .style("fill", function () {
+          let country = data["Electric power consumption (kWh per capita)"];
+          let brightness = 20 + (country % 100) * (80 / 100);
+          return "hsl(150,100%," + brightness + "%)";
+        })
+        .style("filter", function () {
+          let country = data["Electric power consumption (kWh per capita)"];
+          let spread = 2 + (country % 1000) * (10 / 1000);
+          return "drop-shadow(0px 0px " + spread + "px hsl(60,100%,98%))";
+        })
+        .attr("d", path);
+    });
 
-      .attr("d", path(geometry))
-    svg
-      .append("g")
-      .datum(geometry)
-      .attr("class", "interiors")
-      .attr("d", path(geometry));
-
- 
-    function bgscroll() {
-      current += 5;
+    function animate() {
+      current = (current + scrollSpeed / 10) % 360;
       projection.rotate([-λ(current), -24]);
       svg.selectAll("path").attr("d", path);
 
-      drawCircles();
+      rafId = requestAnimationFrame(animate);
     }
 
-    function drawCircles() {
-      var circles = svg.selectAll("circle").data(geometry.features);
-      circles
-        .enter()
-        .append("circle")
-        .merge(circles)
- 
-         .style("opacity", 0.5)
-        .style("fill", "#00ffa6")
-        // .attr("stroke", "#028457")
-    
-         .attr("cx", function (d) {
-
-          if (path.centroid(d)[0])
-         { return path.centroid(d)[0]};
-        })
-        .attr("cy", function (d) {
-          if (path.centroid(d)[0])
-          {return path.centroid(d)[1]};
-        })
-        .attr("r", function (d) {
-          const result = countryData.filter(
-            (country) => country["United Nations m49 country code"] === d.id
-          );
-        
-          if (result.length != 0)
-        { 
-          if (
-            result[0]["Electric power consumption (kWh per capita)"] >= 20000
-          ) {
-            return 30;
-          }  
-          
-          if (
-              result[0]["Electric power consumption (kWh per capita)"] >= 10000
-            ) {
-              return 20;
-            }
-
-            if (
-              result[0]["Electric power consumption (kWh per capita)"] >= 5000
-            ) {
-              return 10;
-            }
-          if (
-            result[0]["Electric power consumption (kWh per capita)"] >= 1000
-          ) {
-            return 5;
-          }
-          if (result[0]["Electric power consumption (kWh per capita)"] >= 500) {
-            return 2.5;
-          } 
-
-          if (result[0]["Electric power consumption (kWh per capita)"] >= 200) {
-            return 1;
-          }
-        
-        
-        }
-          
-          else {
-            return 0.5;
-          }
-        // return 5
-         });
-
-      circles.exit().remove();
-    }
-
-    setInterval(bgscroll, scrollSpeed);
+    // Stop the animation after 10 seconds
+    //setTimeout(stopAnimate, 10000);
+    animate();
+    // ()
   };
 
   return (
     <div className="marks">
-      <div id="globe"></div>
+      <div id="legend-background" ref={legendRef}></div>
+      <div id="globe" ref={svgRef}></div>
     </div>
   );
 };
+
