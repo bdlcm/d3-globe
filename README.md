@@ -1,4 +1,4 @@
-# Spinning globe with per Capita Electric Power Comsumption (in 2014 in kWh) markers using React and D3.js
+# Spinning globe with per Capita Electric Power Comsumption (in 2014 in kWh)  using React and D3.js
 
 
 
