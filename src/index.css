@@ -23,8 +23,7 @@ svg {
   /* background: #244971; */
   background: radial-gradient(#016bbb, #012138);
   border-radius: 100%;
-  /* box-shadow:0 0 10px rgba(0,0,0,0.4); */
-  /* position: absolute; */
+
   left: 0px !important;
   margin-left: 0px !important;
 }
@@ -36,12 +35,11 @@ svg {
       rgba(255, 255, 255, 0.1) 5px,
       transparent 40px
     ),
-    /* radial-gradient(red, rgba(255,255,255,.10) 2px, transparent 30px), */
-      radial-gradient(
-        rgba(229, 255, 0, 0.492),
-        rgba(255, 255, 255, 0.1) 1px,
-        transparent 20px
-      ),
+    radial-gradient(
+      rgba(229, 255, 0, 0.492),
+      rgba(255, 255, 255, 0.1) 1px,
+      transparent 20px
+    ),
     radial-gradient(
       rgba(255, 174, 0, 0.61),
       rgba(255, 255, 255, 0.063) 1px,
@@ -85,32 +83,24 @@ svg {
   transform: translate(-50%, -50%);
 }
 
+#legend-background {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -10%);
+}
+
 .marks .sphere {
   fill: #16497f;
   position: absolute;
   left: 0px !important;
   margin-left: 0px !important;
-
-  /* stroke: #FDF687; */
-  /* background: -webkit-linear-gradient(-91deg, #EEF85B 5%, #7AEC8D 53%, #09E5C3 91%); */
 }
 
 .marks .continents {
   fill: #1b7857;
   stroke: #fdf687;
-  /* filter: drop-shadow(3px 2px 2px rgba(255, 248, 194, 0.9)); */
 }
-.marks .interiors {
-  fill: none;
-  /* stroke: linear-gradient(0deg, rgb(29, 28, 58) 0%, rgb(2, 132, 87) 100%); */
-  /* filter: drop-shadow(3px 5px 3px rgba(255, 248, 194, 0.9)); */
-  stroke: #028457;
-  background: -webkit-linear-gradient(
-    -91deg,
-    #eef85b 5%,
-    #7aec8d 53%,
-    #09e5c3 91%
-  );
-}
+
  
  
