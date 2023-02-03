@@ -2,7 +2,7 @@
 
 
 
-Creates a spinning globe with countries and markers representing per capita electric power consumption.
+Creates a spinning globe with countries whose brightness representing per capita electric power consumption. Countries without data are represented in black.
 
 
 Note: This visualization constantly recalculates and reprojects the position of over 4000 markers and thus needs a lot of computation power. Older computer and mobile devices might struggle with the rendering process. Furthermore the visualization is only optimized for Chrome browsers and might look different than expected when opened in other browsers.
@@ -27,7 +27,8 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
 
  
-<img width="541" alt="Screen Shot 2023-01-25 at 11 43 12 AM" src="https://user-images.githubusercontent.com/45096174/214624262-4a7babcb-f00b-4ee6-8635-363488ad2bf1.png">
+ 
 
+<img width="742" alt="Screen Shot 2023-02-02 at 9 03 35 PM" src="https://user-images.githubusercontent.com/45096174/216494730-60537028-2346-4e54-80a5-81b43411ccba.png">
 
 
